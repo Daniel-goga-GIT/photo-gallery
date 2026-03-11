@@ -15,12 +15,23 @@
   <ion-grid>
     <ion-row>
       <!-- CHANGE: Create a new column and image component for each photo -->
-      <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-        <ion-img
-          [src]="photo.webviewPath"
-          (click)="showActionSheet(photo, position)"
-          (keydown.enter)="showActionSheet(photo, position)">
-        </ion-img>
+      <ion-col
+        size="6"
+        class="photo-card"
+        role="button"
+        tabindex="0"
+        *ngFor="let photo of photoService.photos; index as position"
+        (click)="onPhotoInteraction($event, photo, position)"
+        (touchend)="onPhotoInteraction($event, photo, position)"
+        (keydown.enter)="showActionSheet(photo, position)">
+        <button
+          class="delete-button"
+          type="button"
+          (click)="onDeleteButtonInteraction($event, photo, position)"
+          (touchend)="onDeleteButtonInteraction($event, photo, position)">
+          Delete
+        </button>
+        <img class="gallery-photo" [src]="photo.webviewPath" alt="Photo" />
       </ion-col>
     </ion-row>
   </ion-grid>

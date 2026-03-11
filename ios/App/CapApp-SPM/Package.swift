@@ -17,8 +17,11 @@ let package = Package(
         .package(name: "CapacitorFilesystem", path: "..\..\..\node_modules\@capacitor\filesystem"),
         .package(name: "CapacitorHaptics", path: "..\..\..\node_modules\@capacitor\haptics"),
         .package(name: "CapacitorKeyboard", path: "..\..\..\node_modules\@capacitor\keyboard"),
+        .package(name: "CapacitorLiveUpdates", path: "..\..\..\node_modules\@capacitor\live-updates"),
         .package(name: "CapacitorPreferences", path: "..\..\..\node_modules\@capacitor\preferences"),
-        .package(name: "CapacitorStatusBar", path: "..\..\..\node_modules\@capacitor\status-bar")
+        .package(name: "CapacitorSplashScreen", path: "..\..\..\node_modules\@capacitor\splash-screen"),
+        .package(name: "CapacitorStatusBar", path: "..\..\..\node_modules\@capacitor\status-bar"),
+        .package(name: "CordovaPluginIonic", path: "../../capacitor-cordova-ios-plugins/sources/CordovaPluginIonic")
     ],
     targets: [
         .target(
@@ -31,8 +34,11 @@ let package = Package(
                 .product(name: "CapacitorFilesystem", package: "CapacitorFilesystem"),
                 .product(name: "CapacitorHaptics", package: "CapacitorHaptics"),
                 .product(name: "CapacitorKeyboard", package: "CapacitorKeyboard"),
+                .product(name: "CapacitorLiveUpdates", package: "CapacitorLiveUpdates"),
                 .product(name: "CapacitorPreferences", package: "CapacitorPreferences"),
-                .product(name: "CapacitorStatusBar", package: "CapacitorStatusBar")
+                .product(name: "CapacitorSplashScreen", package: "CapacitorSplashScreen"),
+                .product(name: "CapacitorStatusBar", package: "CapacitorStatusBar"),
+                .product(name: "CordovaPluginIonic", package: "CordovaPluginIonic")
             ]
         )
     ]

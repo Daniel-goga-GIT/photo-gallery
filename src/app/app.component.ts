@@ -15,7 +15,7 @@ export class AppComponent {
 
   private getLiveUpdatesRuntimeConfig() {
     // These values can come from your backend after user sign-in.
-    const channel = localStorage.getItem('liveUpdatesChannel') ?? 'Production';
+    const channel = localStorage.getItem('liveUpdatesChannel') ?? 'production';
     const maxVersions = Number(localStorage.getItem('liveUpdatesMaxVersions') ?? '2');
 
     return {

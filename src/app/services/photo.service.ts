@@ -20,6 +20,13 @@ export class PhotoService {
     this.platform = platform;
   }
 
+  private async persistPhotos() {
+    await Preferences.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos),
+    });
+  }
+
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
@@ -32,10 +39,7 @@ export class PhotoService {
 
     this.photos.unshift(savedImageFile);
 
-    Preferences.set({
-      key: this.PHOTO_STORAGE,
-      value: JSON.stringify(this.photos),
-    });
+    await this.persistPhotos();
   }
 
   private async savePicture(photo: Photo) {
@@ -70,6 +74,7 @@ export class PhotoService {
       return {
         filepath: savedFile.uri,
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+        isFavorite: false,
       };
     } else {
       // Use webPath to display the new image instead of base64 since it's
@@ -77,6 +82,7 @@ export class PhotoService {
       return {
         filepath: fileName,
         webviewPath: photo.webPath,
+        isFavorite: false,
       };
     }
   }
@@ -97,6 +103,12 @@ export class PhotoService {
     const { value: photoList } = await Preferences.get({ key: this.PHOTO_STORAGE });
     this.photos = (photoList ? JSON.parse(photoList) : []) as UserPhoto[];
 
+    // Ensure backward compatibility with photos stored before favorites existed.
+    this.photos = this.photos.map((photo) => ({
+      ...photo,
+      isFavorite: photo.isFavorite ?? false,
+    }));
+
     // If running on the web...
     if (!this.platform.is('hybrid')) {
       for (let photo of this.photos) {
@@ -116,10 +128,7 @@ export class PhotoService {
     this.photos.splice(position, 1);
 
     // Update photos array cache by overwriting the existing photo array
-    Preferences.set({
-      key: this.PHOTO_STORAGE,
-      value: JSON.stringify(this.photos),
-    });
+    await this.persistPhotos();
 
     // Delete photo file from filesystem
     const filename = photo.filepath.slice(photo.filepath.lastIndexOf('/') + 1);
@@ -129,9 +138,24 @@ export class PhotoService {
       directory: Directory.Data,
     });
   }
+
+  public async toggleFavorite(photo: UserPhoto) {
+    const target = this.photos.find((item) => item.filepath === photo.filepath);
+    if (!target) {
+      return;
+    }
+
+    target.isFavorite = !target.isFavorite;
+    await this.persistPhotos();
+  }
+
+  public get favoritePhotos() {
+    return this.photos.filter((photo) => photo.isFavorite);
+  }
 }
 
 export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
+  isFavorite?: boolean;
 }

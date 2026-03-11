@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { camera } from 'ionicons/icons';
+import { camera, heart, heartOutline } from 'ionicons/icons';
 import { PhotoService } from '../services/photo.service';
 import type { UserPhoto } from '../services/photo.service';
 import { ActionSheetController } from '@ionic/angular';
@@ -16,7 +16,7 @@ import { ActionSheetController } from '@ionic/angular';
 })
 export class Tab2Page implements OnInit {
   constructor(public photoService: PhotoService, public actionSheetController: ActionSheetController) {
-    addIcons({ camera });
+    addIcons({ camera, heart, heartOutline });
   }
 
   // CHANGE: Add call to `loadSaved()` when navigating to the Photos tab
@@ -41,6 +41,16 @@ export class Tab2Page implements OnInit {
     if (window.confirm('Delete this photo?')) {
       void this.photoService.deletePhoto(photo, position);
     }
+  }
+
+  onFavoriteButtonInteraction(event: Event, photo: UserPhoto) {
+    event.preventDefault();
+    event.stopPropagation();
+    void this.photoService.toggleFavorite(photo);
+  }
+
+  isFavorite(photo: UserPhoto) {
+    return !!photo.isFavorite;
   }
 
   public async showActionSheet(photo: UserPhoto, position: number) {

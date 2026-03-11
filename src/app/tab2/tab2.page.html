@@ -25,6 +25,13 @@
         (touchend)="onPhotoInteraction($event, photo, position)"
         (keydown.enter)="showActionSheet(photo, position)">
         <button
+          class="favorite-button"
+          type="button"
+          (click)="onFavoriteButtonInteraction($event, photo)"
+          (touchend)="onFavoriteButtonInteraction($event, photo)">
+          <ion-icon [name]="isFavorite(photo) ? 'heart' : 'heart-outline'"></ion-icon>
+        </button>
+        <button
           class="delete-button"
           type="button"
           (click)="onDeleteButtonInteraction($event, photo, position)"

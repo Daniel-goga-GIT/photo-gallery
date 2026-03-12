@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import * as LiveUpdates from '@capacitor/live-updates';
 import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  imports: [IonApp, IonRouterOutlet, MatSlideToggleModule],
 })
 export class AppComponent implements OnInit {
   constructor() {}
